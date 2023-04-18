@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+let cors = require('cors')
 require('dotenv').config();
 const sqlite = require('sqlite3').verbose();
 const usersSchema = require('./models/user_schema');
@@ -15,11 +16,14 @@ const db = new sqlite.Database("database.db")
 const auth = require('./routes/auth');
 const products = require('./routes/products');
 const categories = require('./routes/category')
+const users = require('./routes/users')
+app.use(cors())
 
 app.use(express.json());
 app.use('/api/auth', auth);
 app.use('/api/products', products);
 app.use('/api/categories', categories);
+app.use('/api/users',users)
 
 app.use('/uploads', express.static('./_uploads'));
 

@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/productControllers');
-const upload = require('../middlewares/multer');
+const {upload}= require('../middlewares/multer');
 const {authenticateToken} = require("../middlewares/authenticateToken");
 
 router.get('/', controller.getProductsList);

@@ -7,6 +7,10 @@ function register(req, res) {
 
     console.log(req.body)
     const username = req.body.username;
+    const FirstName = req.body.FirstName;
+    const LastName = req.body.LastName
+
+
     const  password = req.body.password
 
     db.get('SELECT * FROM users WHERE username = ?', [username], (error, row) => {
@@ -16,27 +20,23 @@ function register(req, res) {
         if (row) {
             res.status(409).json({msg: 'Username Already Exists'});
         } else {
-            const sql = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
+            const sql = 'INSERT INTO users (image,FirstName, LastName, username, password, role) VALUES (?, ?, ?,?,?,?)';
             const hashed_password = CryptoJS.SHA256(password).toString();
+            console.log(req.file.filename)
+     let img= "";
+            if (req.file.filename===undefined){
+                img = "uploads/users/default-avatar.jpg"
+            }
+            else {
+                img = `uploads/users/${req.file.filename}`
+            }
 
-            db.run(sql, [username, hashed_password, "admin"], (error, data) => {
+            db.run(sql, [img, FirstName,LastName, username, hashed_password, "user"], (error, data) => {
                 if (error) {
                     res.status(500).json({msg: 'Error: User create error'});
                 }
                 res.status(201).send({ msg:'User created', data});
-                // db.get('SELECT * FROM users WHERE username = ?', [username], (error, row) => {
-                //     if (error) {
-                //         res.send('Error2');
-                //     } else {
-                //         db.run('INSERT INTO carts (user_id) VALUES (?)', [row.user_id], (error) => {
-                //             if (error) {
-                //                 res.send('Error3');
-                //             } else {
-                //                 res.send(JSON.stringify({ status:'User created' }));
-                //             }
-                //         })
-                //     }
-                // })
+
             })
         }
     })
