@@ -32,8 +32,8 @@ function getCategoryList(req, res){
 function createCategory(req, res) {
     const isAdmin = checkAdmin(req, res);
     if (isAdmin) {
-        const {title,description} = req.body;
-        db.run('INSERT INTO Category (title,description) VALUES (?,?)', [title,description], (error, data) => {
+        const {title} = req.body;
+        db.run('INSERT INTO Category (title) VALUES (?)', [title], (error, data) => {
             if (error) {
                 res.status(500).json({msg: error.message});
             } else {
@@ -49,9 +49,9 @@ function updateCategory(req, res) {
     const id = req.params.id;
     const isAdmin = checkAdmin(req, res);
     if (isAdmin) {
-        const {title, description} = req.body;
+        const {title} = req.body;
 
-        db.run('UPDATE Category SET title = ?, description = ? WHERE id = ?', [title, description, id], (error, data) => {
+        db.run('UPDATE Category SET title = ?,  WHERE id = ?', [title,  id], (error, data) => {
             if (error) {
                 res.status(500).json({msg: error.message});
             } else {
@@ -71,7 +71,7 @@ function deleteCategory(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.status(201).json({msg: "Product deleted"});
+                res.status(201).json({msg: "Category deleted"});
             }
         })
     } else {

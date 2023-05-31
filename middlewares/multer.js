@@ -12,6 +12,9 @@ const storage = multer.diskStorage({
         if (!fs.existsSync(__dirname + '/../_uploads/users')) {
             fs.mkdirSync(__dirname + '/../_uploads/users');
         }
+        if (!fs.existsSync(__dirname + '/../_uploads/vacancy')) {
+            fs.mkdirSync(__dirname + '/../_uploads/vacancy');
+        }
 
         if (req.method === 'POST') {
             cb(null, __dirname + '/../_uploads/products')
@@ -19,9 +22,16 @@ const storage = multer.diskStorage({
         if (req.method === 'POST') {
             cb(null, __dirname + '/../_uploads/users')
         }
-    },
-    filename: function (req, file, cb) {
         if (req.method === 'POST') {
+            cb(null, __dirname + '/../_uploads/vacancy')
+        }
+    },
+
+
+    filename: function (req, file, cb) {
+
+        if (req.method === 'POST') {
+            
             cb(null, new Date().getTime().toString() + file.originalname)
         }
     }

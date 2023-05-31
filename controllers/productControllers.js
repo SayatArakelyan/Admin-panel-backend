@@ -2,13 +2,13 @@ const sqlite = require('sqlite3').verbose();
 const db = new sqlite.Database('database.db');
 const {checkAdmin} = require('../functions/checkAdmin');
 
-function getOneProduct(req, res){
+function getOneProduct(req, res) {
     const id = req.params.id;
-    db.get(`SELECT name, title, price, Products.description as pdescription, Category.description as cDescription FROM Products INNER JOIN Category ON Products.category_id = Category.id WHERE Products.id = ?`,[id], (error, data) => {
-        if(error) {
+    db.get(`SELECT name, title, price, Products.description as pdescription, Category.description as cDescription FROM Products INNER JOIN Category ON Products.category_id = Category.id WHERE Products.id = ?`, [id], (error, data) => {
+        if (error) {
             res.status(500).json({msg: 'Error: Server error'});
         }
-        if(!data) {
+        if (!data) {
             res.status(404).json({msg: 'Error: Product not found'});
         }
         res.status(200).json(data);
@@ -16,9 +16,9 @@ function getOneProduct(req, res){
 
 }
 
-function getProductsList(req, res){
+function getProductsList(req, res) {
     db.all(`SELECT * FROM Products`, (error, data) => {
-        if(error) {
+        if (error) {
             res.status(500).json({msg: 'Error: Server error'});
         }
         res.status(200).json(data || []);
@@ -26,13 +26,11 @@ function getProductsList(req, res){
 }
 
 
-
-
 function createProduct(req, res) {
     const isAdmin = checkAdmin(req, res);
     if (isAdmin) {
-        const {name, price,description, category_id} = req.body;
-        db.run('INSERT INTO Products(name, description, price, image, category_id) VALUES (?,?,?,?,?)', [name,description, price, `uploads/products/${req.file.filename}`, category_id], (error, data) => {
+        const {nameEn, nameRu, price, descriptionEn, descriptionRu, category} = req.body;
+        db.run('INSERT INTO Products(nameEn, nameRu, descriptionEn, descriptionRu, price, image, category) VALUES (?,?,?,?,?,?,?)', [nameEn, nameRu, descriptionEn, descriptionRu, price, `uploads/products/${req.file.filename}`, category], (error, data) => {
             if (error) {
                 res.status(500).json({msg: error.message});
             } else {
@@ -48,9 +46,9 @@ function updateProduct(req, res) {
     const id = req.params.id;
     const isAdmin = checkAdmin(req, res);
     if (isAdmin) {
-        const {name, price, description} = req.body;
+        const {nameEn, NameRu, price, descriptionEn, descriptionRu, category} = req.body;
 
-        db.run('UPDATE Products SET name = ?, price = ?, description = ? WHERE id = ?', [name, price, description, id], (error, data) => {
+        db.run('UPDATE Products SET nameEn = ?, nameRu = ?, price = ?, descriptionEn = ?, descriptionRu= ?, WHERE id = ?', [nameEn, NameRu, price, descriptionEn, descriptionRu, id], (error, data) => {
             if (error) {
                 res.status(500).json({msg: error.message});
             } else {
@@ -63,7 +61,7 @@ function updateProduct(req, res) {
 }
 
 function deleteProduct(req, res) {
-    const id = req.params.id;
+    const id = req.params.id
     const isAdmin = checkAdmin(req, res);
     if (isAdmin) {
         db.run('DELETE FROM Products WHERE id = ?', [id], (error, data) => {
