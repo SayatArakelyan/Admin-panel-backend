@@ -7,6 +7,7 @@ const {authenticateToken} = require("../middlewares/authenticateToken");
 router.get('/', controller.getVacancyList);
 router.get("/category",controller.getJobCategoryList)
 router.get("/specialistLevel",controller.getSpecialistLevelList)
+router.get("/:id" ,controller.getOneVacancy)
 
 
 router.use(authenticateToken);

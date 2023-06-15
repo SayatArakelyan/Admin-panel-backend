@@ -9,7 +9,7 @@ function getOneUser(req, res){
             res.status(500).json({msg: 'Error: Server error'});
         }
         if(!data) {
-            res.status(404).json({msg: 'Error: Category not found'});
+            res.status(404).json({msg: 'Error: User  not found'});
         }
         res.status(200).json(data);
     })

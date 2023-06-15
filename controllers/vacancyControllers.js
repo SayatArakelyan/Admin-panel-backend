@@ -3,6 +3,8 @@ const db = new sqlite.Database('database.db');
 const {checkAdmin} = require('../functions/checkAdmin');
 
 function getJobCategoryList(req, res) {
+
+    console.log('BBB')
     db.all(`SELECT * FROM JobCategory`, (error, data) => {
         if (error) {
             res.status(500).json({msg: 'Error: Server error'});
@@ -116,13 +118,27 @@ function deleteSpecialistLevel(req, res) {
             if (error) {
                 res.status(500).json({ msg: error.message });
             } else {
-                res.status(201).json({ msg: "JobCategory deleted" });
+                res.status(201).json({ msg: "SpecialistLevel deleted" });
             }
         });
     } else {
         res.status(401).send({ msg: "Denied Access" });
     }
 }
+function getOneVacancy(req, res) {
+    const id = req.params.id;
+
+    db.get('SELECT * FROM Vacancy WHERE id = ?', [id], (error, data) => {
+        if (error) {
+            res.status(500).json({ msg: 'Error: Server error' });
+        } else if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ msg: 'Vacancy not found' });
+        }
+    });
+}
+
 
 
 function getVacancyList(req, res) {
@@ -245,5 +261,6 @@ module.exports = {
     getVacancyList,
     createVacancy,
     updateVacancy,
-    deleteVacancy
+    deleteVacancy,
+    getOneVacancy
 }

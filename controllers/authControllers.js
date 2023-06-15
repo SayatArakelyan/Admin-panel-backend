@@ -63,8 +63,8 @@ function login(req, res) {
         if (!row) {
             res.status(404).json({msg: 'No Such User'});
         } else if (hashed_password === row.password) {
-            const token = generateAccessToken(row.image, row.Email, row.password, row.FirstName, row.LastName, row.BirthDate, row.country, row.phoneNumber, row.role);
-            res.status(200).json({jwt: token, user: row});
+            const token = generateAccessToken(row.id, row.image, row.Email, row.password, row.FirstName, row.LastName, row.BirthDate, row.country, row.phoneNumber, row.role,row.isVerify);
+            res.status(200).json({jwt: token, user: row });
         } else {
             res.status(403).json({msg: 'Wrong Password'});
         }

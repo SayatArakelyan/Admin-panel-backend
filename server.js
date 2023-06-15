@@ -10,6 +10,7 @@ const productSchema = require('./models/products_schema')
 const categorySchema = require("./models/category_schema")
 const messageSchema = require("./models/message_schema")
 const vacancySchema = require("./models/vacancy_schema")
+const customer_message_schema = require("./models/customer_message_schema")
 
 const port = process.env.PORT || 3000
 
@@ -21,6 +22,7 @@ const categories = require('./routes/category')
 const users = require('./routes/users')
 const message = require("./routes/message")
 const vacancy = require("./routes/vacancy")
+const customerMessage = require("./routes/customerMessage")
 app.use(cors())
 
 app.use(express.json());
@@ -30,6 +32,7 @@ app.use('/api/categories', categories);
 app.use('/api/users',users);
 app.use('/api/sendEmail', message);
 app.use('/api/vacancy', vacancy)
+app.use("/api/customerMessage",customerMessage)
 
 app.use('/uploads', express.static('./_uploads'));
 
@@ -50,6 +53,7 @@ servicesSchema.createServicesTable(db)
 productSchema.createProductTable(db)
 categorySchema.createCategoryTable(db)
 messageSchema.createMessageTable(db)
+customer_message_schema.createCustomerMessageTable(db)
 
 
 app.use(express.json());
