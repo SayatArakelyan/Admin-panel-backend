@@ -3,6 +3,22 @@ const {checkAdmin} = require("../functions/checkAdmin");
 const sqlite = require('sqlite3').verbose();
 const db = new sqlite.Database('database.db');
 
+function getAllMessages(req, res) {
+    const isAdmin = checkAdmin(req, res);
+    if (isAdmin) {
+        db.all('SELECT * FROM SendMessage', (error, rows) => {
+            if (error) {
+                res.send(error);
+            } else {
+                res.status(200).json(rows);
+            }
+        });
+    } else {
+        res.status(401).send({ msg: 'Access Denied' });
+    }
+}
+
+
 function sendMessage(req, res) {
     const {message, email} = req.body;
     const image = req.file;
@@ -68,5 +84,6 @@ function removeMessage(req,res){
 
 module.exports = {
     sendMessage,
-    removeMessage
+    removeMessage,
+    getAllMessages
 };

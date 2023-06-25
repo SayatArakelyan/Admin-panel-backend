@@ -34,9 +34,9 @@ function createCustomerMessage(req, res) {
 
 function updateCustomerMessage(req, res) {
     const id = req.params.id;
-    const { message } = req.body;
 
-    db.run('UPDATE CustomerMessage SET message = ?, isRead = 1 WHERE id = ?', [message, id], (error, data) => {
+
+    db.run('UPDATE CustomerMessage SET isRead = 1 WHERE id = ?', [ id], (error, data) => {
         if (error) {
             res.status(500).json({ msg: error.message });
         } else {

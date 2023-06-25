@@ -5,6 +5,7 @@ const {upload} = require('../middlewares/multer');
 const {authenticateToken} = require("../middlewares/authenticateToken");
 
 
+router.get("/",controller.getAllMessages)
 router.post('/', upload.single('image'), controller.sendMessage);
 
 router.use(authenticateToken);
